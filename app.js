@@ -8,8 +8,8 @@ const apiKey = process.env.API_KEY;
 const urls = [
   {
     url: "https://api.polygonscan.com/api?module=proxy&action=eth_blockNumber&apikey=",
-    gaugeName: "Bortip",
-    apiKey: apiKey,
+    gaugeName: "helloworld",
+    apiKey: 1BR5A995487NTET825T7Y3P2EZJJUGAPV3,
   },
 ];
 
@@ -54,8 +54,8 @@ const server = http.createServer((req, res) => {
   }
 });
 
-server.listen(8080, () => {
-  console.log("Server is running on http://localhost:8080");
+server.listen(80, () => {
+  console.log("Server is running on http://localhost:80");
   updateMetrics();
-  console.log("Metrics are available on http://localhost:8080/metrics");
+  console.log("Metrics are available on http://localhost:80/metrics");
 });

@@ -15,7 +15,7 @@ RUN npm install
 COPY app.js app.js
 
 # Make port 3000 available to the world outside this container
-EXPOSE 8080
+EXPOSE 80
 
 # Define the command to run your app using CMD which defines your runtime
 CMD [ "node", "app.js" ]

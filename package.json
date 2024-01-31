@@ -1,0 +1,17 @@
+{
+  "name": "blockchecker",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Just checking Latest blocks from Official block explorers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "author": "Tornike Machavariani",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.1",
+    "prom-client": "^15.0.0"
+  }
+}

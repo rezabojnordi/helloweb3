@@ -179,6 +179,19 @@ helm upgrade -i  grafana -n prometheus bitnami/grafana ---values values.yaml
 ## Additional Resources
 - Terraform, GitHub CI, and Helm references are provided in this repository to illustrate the basic structure. Feel free to modify these as needed.
 
+## How To Run Terraform"
+
+This section provides instructions on running Terraform to create a Kubernetes cluster. It advises starting with the command `terraform init` to initialize Terraform and download necessary plugins and dependencies. Then, by executing `terraform plan` followed by `terraform apply`, you can review the execution plan and proceed with creating the infrastructure as specified in your Terraform configuration files. The accompanying image demonstrates the output of the `terraform init` command.
+
+```bash
+terraform init
+```
+
+```bash
+terraform plan
+terraform apply
+```
+
 ## Submission Guidelines
 - Ensure all deliverables are committed to your repository.
 - Provide clear documentation in the repository.

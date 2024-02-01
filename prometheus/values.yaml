@@ -1,0 +1,51 @@
+server:
+  replicaCount: 2
+  statefulSet:
+      enabled: true
+  retention: "14d"
+  persistentVolume:
+    size: 100Gi
+  readinessProbeInitialDelay: 120
+  livenessProbeInitialDelay: 120
+  resources:
+    limits:
+      cpu: 500m
+      memory: 2Gi
+    requests:
+      cpu: 100m
+      memory: 512Mi
+  ingress:
+    enabled: false
+  service:
+    enabled: true
+    type: NodePort
+
+
+    hosts:
+      - prometheus.softgrand.ir
+configmapReload:
+  
+alertmanager:
+  enabled: true
+  replicaCount: 1
+  ingress:
+    enabled: false
+    hosts:
+      - alertmanager.softgrand.ir
+serviceAccounts:
+  alertmanager:
+    create: false
+configmapReload:
+  alertmanager:
+    enabled: false
+
+extraScrapeConfigs: |
+  - job_name: prometheus1
+    static_configs:
+    - targets:
+      - localhost:9090
+
+  - job_name: 'node'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['helloweb3.default.svc.cluster.local:80']

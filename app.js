@@ -9,7 +9,7 @@ const urls = [
   {
     url: "https://api.polygonscan.com/api?module=proxy&action=eth_blockNumber&apikey=",
     gaugeName: "helloworld",
-    apiKey: 1BR5A995487NTET825T7Y3P2EZJJUGAPV3,
+    apiKey: "1BR5A995487NTET825T7Y3P2EZJJUGAPV3"
   },
 ];
 

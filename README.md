@@ -52,6 +52,60 @@ This challenge involves deploying a Node.js application that monitors the Polygo
 - Best practices in Terraform, Kubernetes, monitoring, and CI/CD.
 - Documentation quality.
 
+### Deploying Prometheus and Grafana on your Kubernetes cluster"
+
+This section guides you through the process of deploying both Prometheus and Grafana on your Kubernetes cluster. By following the provided instructions, you can set up robust monitoring and visualizations for your cluster using Prometheus to collect metrics and Grafana to create insightful dashboards for data visualization and analysis.
+
+#### Installing Prometheus
+
+This section provides instructions for installing Helm on either your deployment server or Linux client using the `snap` package manager. After Helm is installed, you can add the Prometheus Community repository using the helm repository add command, enabling you to access and install Prometheus using Helm charts from the repository.
+
+* installing helm on your deployment server or your Linux client
+
+```bash
+snap install helm --classic
+
+# Adding repository for prometheus
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+```
+
+### Prometheus Configuration
+
+This section provides a `YAML` configuration snippet and the corresponding Helm command to set up and deploy Prometheus with custom configurations. By modifying the `values.yaml` file to meet your specific requirements and executing the provided Helm command, you can install Prometheus in the desired namespace (`prometheus`) using the Prometheus Community Helm chart. This allows for flexible configuration of scrapes, including targets for both Prometheus itself (`localhost:9090`) and the application Exporter (`helloweb3.default.svc.cluster.local:80`), along with relabeling configurations for customization.
+
+```yaml
+extraScrapeConfigs: |
+  - job_name: prometheus1
+    static_configs:
+    - targets:
+      - localhost:9090
+
+
+  - job_name: 'node'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['helloweb3.default.svc.cluster.local:80']
+
+
+
+```
+
+And finally run the following command:
+
+```bash
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm upgrade --install prometheus --values values.yaml \
+     --namespace prometheus prometheus-community/prometheus \
+     --kubeconfig=/etc/kubernetes/admin.conf -n prometheus --create-namespace
+```
+
+
+This section provides the necessary commands to install Grafana using Helm. By adding the `Bitnami` repository and upgrading the Grafana chart, you can easily deploy Grafana and begin visualizing and analyzing your Prometheus metrics in a Kubernetes environment.
+
+```bash
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm upgrade -i  grafana -n prometheus bitnami/grafana ---values values.yaml
+``
 ## Additional Resources
 - Terraform, GitHub CI, and Helm references are provided in this repository to illustrate the basic structure. Feel free to modify these as needed.
 

@@ -1,9 +1,11 @@
 locals {
-  project_id = "YOUR_PROJECT_ID"
-  region     = "YOUUR_REGION"
+  project_id = "secret-medium-412918"
+  region     = "us-central1"
   default_labels = {
     managed-by = "terraform"
   }
+  zone      = "us-central1-a"
+  credential = "keys.json"
 }
 
 terraform {
@@ -16,7 +18,7 @@ terraform {
   }
 
   backend "gcs" {
-    bucket = "YOUR_BUCKET"
+    bucket = "helloweb_12_21"
   }
 }
 
@@ -24,6 +26,8 @@ terraform {
 provider "google" {
   project = local.project_id
   region  = local.region
+  zone = local.zone
+  credentials = local.credential
 }
 
 provider "google-beta" {

@@ -64,7 +64,13 @@ This section provides instructions for installing Helm on either your deployment
 
 ```bash
 snap install helm --classic
-
+```
+#### Installing helloweb3
+```
+cd /helloweb3/helm/helloWeb3
+helm install helloweb3 .
+```
+```
 # Adding repository for prometheus
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 ```

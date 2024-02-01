@@ -175,7 +175,7 @@ This section provides the necessary commands to install Grafana using Helm. By a
 ```bash
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm upgrade -i  grafana -n prometheus bitnami/grafana ---values values.yaml
-``
+```
 ## Additional Resources
 - Terraform, GitHub CI, and Helm references are provided in this repository to illustrate the basic structure. Feel free to modify these as needed.
 

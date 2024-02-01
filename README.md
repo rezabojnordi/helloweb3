@@ -52,6 +52,70 @@ This challenge involves deploying a Node.js application that monitors the Polygo
 - Best practices in Terraform, Kubernetes, monitoring, and CI/CD.
 - Documentation quality.
 
+### Git Action
+
+```
+
+.github/workflow/deploy.yaml 
+
+```
+
+```
+name: Deploy to Kubernetes
+
+on:
+  merge:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check Out Code
+      uses: actions/checkout@v2
+
+    # CI process without testing (We suppose there is no error exist in app. we must create github secrets)
+    - name: Build and Push Docker Image
+      run: |
+        docker build -t myapp:${{ github.sha }} .
+        echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        docker push myapp:${{ github.sha }}
+ 
+    # Manipulate Helm Chart to get New Image Tag
+    - name: Update Helm Chart
+      run: |
+        sed -i 's/tag: .*/tag: "${{ github.sha }}"/' helm/myapp/Chart.yaml
+        # Additional commands to update your Helm chart
+    
+    # Setup Google Cloud initiate parameters
+    - name: Set up Google Cloud
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        project_id: secret-medium-412918
+        service_account_key: ${{ secrets.GKE_SA_KEY_BASE64 }}
+        export_default_credentials: true
+    
+    # Login Gcloud
+    - name: Configure Docker
+      run: gcloud auth configure-docker
+    
+    # Get K8s kubeconfig
+    - name: Get GKE credentials
+      run: |
+        echo '${{ secrets.GKE_SA_KEY_BASE64 }}' | base64 -d > gcloud.json
+        gcloud auth activate-service-account --key-file=gcloud.json
+        gcloud container clusters get-credentials my-cluster  --project secret-medium-412918
+        rm gcloud.json
+    
+    # Deploy Helm on GKP (We recommend that separate helmchart repository from code base repository to avoid unwanted change on helm deployment)
+    - name: Deploy to Kubernetes
+      run: |
+        helm upgrade --install myapp-release helm/myapp
+        # Additional Helm commands for deployment
+
+    # This Is beginner CI Action I suggest we Must Separated CI/CD Process From Each Other To manage multiple rollover polices.
+```
 ### Deploying Prometheus and Grafana on your Kubernetes cluster"
 
 This section guides you through the process of deploying both Prometheus and Grafana on your Kubernetes cluster. By following the provided instructions, you can set up robust monitoring and visualizations for your cluster using Prometheus to collect metrics and Grafana to create insightful dashboards for data visualization and analysis.

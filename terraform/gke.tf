@@ -1,3 +1,5 @@
+
+# Deploy GKE on GCP
 resource "google_container_cluster" "helloweb3" {
   name     = "my-cluster"
   location = "us-central1"
